@@ -23,14 +23,27 @@ def check_age(age):
 
 class AgeError(Exception):
     def __init__(self, age):
-        super().__init__(f"Invalid age: {age}. Age must be between 18 and 120")
+        self.message = f"Invalid age: {age}. Age must be between 18 and 120."
+        super().__init__(self.message)
 
+# Define the function to check age
 def check_age(age):
-    if not 18 <= age <= 120: # avoid __main__.AgeError: Invalid age: 17. Age must be between 18 and 120
+    if not 18 <= age <= 120:
         raise AgeError(age)
     return True
 
-
+# Examples:
 print(check_age(25))  # Expected: True
-print(check_age(17))  # Expected to raise: AgeError: Invalid age: 17. Age must be between 18 and 120
-print(check_age(121)) # Expected to raise: AgeError: Invalid age: 121. Age must be between 18 and 120
+try:
+    print(check_age(17))  # Expected to raise: AgeError: Invalid age: 17. Age must be between 18 and 120
+except AgeError as e:
+    print(e)
+
+try:
+    print(check_age(121)) # Expected to raise: AgeError: Invalid age: 121. Age must be between 18 and 120
+except AgeError as e:
+    print(e)
+
+# Output:
+# True
+
