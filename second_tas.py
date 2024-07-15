@@ -1,30 +1,51 @@
-# Validate price
-# Objective: Write a function `has_valid_price` that checks if each product has a valid price. A valid price must be either an integer or a float, and greater than or equal to zero. Products with a price of 0 are considered free and count as valid.
+# Data Analysis with Aggregation
+# Objective: Write a class `DataAnalyzer` that can load a list of numbers and perform aggregation operations like average, sum, and median.
 # Parameters:
-# - product: A dictionary containing product details with at least a 'price' key.
+# - data: List of numbers.
 # Returns:
-# - A Boolean value: True if the product has a valid price, False otherwise.
+# - Calculated aggregated values based on the method called.
 # Details:
-# - If the price is not an integer or a float, return False.
-# - If the price is less than zero, return False.
-# - If the product is None or does not contain a 'price' key, return False.
+# - Implement methods for `average`, `total`, and `median` which compute respective statistical measures.
+# - Ensure the data list is not empty before performing calculations; raise ValueError if it is.
+
+class DataAnalyzer:
+    pass
+
+# Examples:
+# da = DataAnalyzer([1, 3, 5, 7])
+# print(da.average())  # Expected: 4.0
+# print(da.total())    # Expected: 16
+# print(da.median())   # Expected: 4.0
+
+class DataAnalyzer:
+    def __init__(self, data):
+        self.data = data
+
+    def average(self):
+        if not self.data:
+            raise ValueError("Data list is empty")
+        return sum(self.data) / len(self.data)
+
+    def total(self):
+        if not self.data:
+            raise ValueError("Data list is empty")
+        return sum(self.data)
+
+    def median(self):
+        if not self.data:
+            raise ValueError("Data list is empty")
+        sorted_data = sorted(self.data)
+        n = len(sorted_data)
+        if n % 2 == 0:
+            return (sorted_data[n // 2 - 1] + sorted_data[n // 2]) / 2
+        else:
+            return sorted_data[n // 2]
 
 
-
-def has_valid_price(product):
-    if product is None or 'price' not in product:
-        return False
-    price = product['price']
-    if not isinstance(price, (int, float)):
-        return False
-    if price < 0:
-        return False
-    return True
-
-print(has_valid_price({ "product": "Milk", "price": 1.50 }))  # Expected: True
-print(has_valid_price({ "product": "Cheese", "price": -1 }))  # Expected: False
-print(has_valid_price({ "product": "Eggs", "price": 0 }))  # Expected: True
-print(has_valid_price({ "product": "Cereals", "price": "3.0" }))  # Expected: False
-print(has_valid_price(None))  # Expected: False
+# Examples:
+da = DataAnalyzer([1, 3, 5, 7])
+print('Avg:', da.average())
+print('Total:', da.total())
+print('Median:', da.median())
 
 

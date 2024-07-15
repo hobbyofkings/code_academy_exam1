@@ -1,40 +1,36 @@
-# Class: Book
-# Objective: Create a `Book` class that has two attributes: `title` and `author`.
-# The class should also have two methods:
-# - `get_title()`: Returns "Title: " followed by the instance title.
-# - `get_author()`: Returns "Author: " followed by the instance author.
 
-class Book:
-    def __init__(self, title, author):
-        self.title = title
-        self.author = author
+# Objective: Create a class `AgeError` as a custom exception and a function `check_age` that raises `AgeError` if age is below 18 or above 120.
+# Parameters:
+# - age: An integer representing a person's age.
+# Returns:
+# - True if the age is valid, otherwise raises `AgeError`.
+# Details:
+# - `AgeError` should extend from `Exception` and include an error message that indicates the invalid age range.
 
-    def get_title(self):
-        return f"Title: {self.title}"
+class AgeError():
+    pass
 
-    def get_author(self):
-        return f"Author: {self.author}"
+def check_age(age):
+    if not 18 <= age <= 120:
+        pass
+    return True
+
+# Examples:
+# print(check_age(25))  # Expected: True
+# print(check_age(17))  # Expected to raise: AgeError: Invalid age: 17. Age must be between 18 and 120
+# print(check_age(121)) # Expected to raise: AgeError: Invalid age: 121. Age must be between 18 and 120
 
 
+class AgeError(Exception):
+    def __init__(self, age):
+        super().__init__(f"Invalid age: {age}. Age must be between 18 and 120")
+
+def check_age(age):
+    if not 18 <= age <= 120: # avoid __main__.AgeError: Invalid age: 17. Age must be between 18 and 120
+        raise AgeError(age)
+    return True
 
 
-
-PP = Book("Pride and Prejudice", "Jane Austen")
-H = Book("Hamlet", "William Shakespeare")
-WP = Book("War and Peace", "Leo Tolstoy")
-
-# Examples of attributes and methods:
-print(PP.title)  # Expected: "Pride and Prejudice"
-print(PP.author)  # Expected: "Jane Austen"
-print(PP.get_title())  # Expected: "Title: Pride and Prejudice"
-print(PP.get_author())  # Expected: "Author: Jane Austen"
-
-print(H.title)  # Expected: "Hamlet"
-print(H.author)  # Expected: "William Shakespeare"
-print(H.get_title())  # Expected: "Title: Hamlet"
-print(H.get_author())  # Expected: "Author: William Shakespeare"
-
-print(WP.title)  # Expected: "War and Peace"
-print(WP.author)  # Expected: "Leo Tolstoy"
-print(WP.get_title())  # Expected: "Title: War and Peace"
-print(WP.get_author())  # Expected: "Author: Leo Tolstoy"
+print(check_age(25))  # Expected: True
+print(check_age(17))  # Expected to raise: AgeError: Invalid age: 17. Age must be between 18 and 120
+print(check_age(121)) # Expected to raise: AgeError: Invalid age: 121. Age must be between 18 and 120

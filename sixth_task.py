@@ -1,20 +1,75 @@
-# Make a Rug
-# Objective: Write a function `make_rug` that accepts the height (m), width (n), and an optional character (proc),
-# and generates a list with m elements. Each element is a string consisting of the given character repeated n times.
-# If no character is given, the default character should be the hash symbol (#).
+# Implement a Circular Queue
+# Objective: Design a class `CircularQueue` that implements a circular queue with fixed size using a list.
 # Parameters:
-# - m: An integer representing the height of the rug (number of elements in the list).
-# - n: An integer representing the width of the rug (length of each string).
-# - proc: An optional character used to fill the rug. The default is '#'.
+# - size: An integer representing the maximum number of elements the queue can hold.
 # Returns:
-# - A list of strings, each string consisting of the given character repeated n times.
+# - None; methods handle the queue operations.
+# Details:
+# - Methods include `enqueue`, `dequeue`, `peek`, and `is_empty`.
+# - `enqueue` should add an element to the queue if not full; otherwise, raise an exception.
+# - `dequeue` should remove and return the element from the front if not empty; otherwise, raise an exception.
+# - `peek` returns the front element without removing it.
+# - `is_empty` checks whether the queue is empty.
+# - Handle overflow and underflow appropriately with exceptions.
 
-def make_rug(m, n, proc='#'):
-    return [proc * n for _ in range(m)]
-
-
+class CircularQueue:
+    pass
 
 # Examples:
-print(make_rug(3, 5))       # Expected: ["#####", "#####", "#####"]
-print(make_rug(3, 5, '$'))  # Expected: ["$$$$$", "$$$$$", "$$$$$"]
-print(make_rug(2, 2, 'A'))  # Expected: ["AA", "AA"]
+# cq = CircularQueue(3)
+# cq.enqueue(1)
+# cq.enqueue(2)
+# print(cq.peek())  # Expected: 1
+# print(cq.dequeue())  # Expected: 1
+# print(cq.is_empty())  # Expected: False
+# cq.enqueue(3)
+# cq.enqueue(4)
+# print(cq.dequeue())  # Expected: 2
+# print(cq.dequeue())  # Expected: 3
+
+class CircularQueue:
+    def __init__(self, size):
+        self.size = size
+        self.queue = [None] * size
+        self.front = self.rear = -1
+
+    def is_empty(self):
+        return self.front == -1
+
+    def is_full(self):
+        return (self.rear + 1) % self.size == self.front
+
+    def enqueue(self, item):
+        if self.is_full():
+            raise Exception("Queue is full")
+        elif self.is_empty():
+            self.front = 0
+        self.rear = (self.rear + 1) % self.size
+        self.queue[self.rear] = item
+
+    def dequeue(self):
+        if self.is_empty():
+            raise Exception("Queue is empty")
+        item = self.queue[self.front]
+        if self.front == self.rear:
+            self.front = self.rear = -1
+        else:
+            self.front = (self.front + 1) % self.size
+        return item
+
+    def peek(self):
+        if self.is_empty():
+            raise Exception("Queue is empty")
+        return self.queue[self.front]
+
+cq = CircularQueue(3)
+cq.enqueue(1)
+cq.enqueue(2)
+print(cq.peek())
+print(cq.dequeue())
+print(cq.is_empty())
+cq.enqueue(3)
+cq.enqueue(4)
+print(cq.dequeue())
+print(cq.dequeue())
+print(cq.is_empty())

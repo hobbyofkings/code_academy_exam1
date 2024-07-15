@@ -1,42 +1,36 @@
-# Who Passed the Course?
-# Objective: Write a function `who_passed` that takes a dictionary of student names and a list of their test scores over the semester,
-# and returns a list of all the students who passed the course. A student passes if they scored 100% on all tests.
-# The list should be returned in alphabetical order.
+# Utilize `super()` in Inheritance
+# Objective: Create a class hierarchy where `ElectricCar` extends `Car` and uses `super()` to initialize parent class attributes.
 # Parameters:
-# - students: A dictionary where the keys are student names (strings) and the values are lists of test scores (strings in the format "x/y").
+# - `make`: String
+# - `model`: String
+# - `battery_size`: Integer (specific to `ElectricCar`)
 # Returns:
-# - A list of student names who passed the course, sorted in alphabetical order.
-# Notes:
-# - All test scores must be 100% for the student to pass.
-# - Return the list of names in alphabetical order.
+# - None; initialization of attributes.
+# Details:
+# - `Car` class should initialize `make` and `model`.
+# - `ElectricCar` should add `battery_size` and initialize it using `super()`.
 
-def who_passed(students):
-    # sort by keys
-    students_sorted = dict(sorted(students.items()))
-    passed_students = []
-    # check values if number before '/' is equal to number after '/' than add to passed_students
-    for student, scores in students_sorted.items():
-        if all([score.split('/')[0] == score.split('/')[1] for score in scores]):
-            passed_students.append(student)
-    return passed_students
+class Car:
+  pass
+
+class ElectricCar(Car):
+  pass
+
+# Desired Outcome:
+# ec = ElectricCar('Tesla', 'Model S', 85)
+# print(ec.make, ec.model, ec.battery_size)  # Expected: Tesla Model S 85
+
+class Car:
+    def __init__(self, make, model):
+        self.make = make
+        self.model = model
+
+class ElectricCar(Car):
+    def __init__(self, make, model, battery_size):
+        super().__init__(make, model) # super using for calling parent class attributes in this case make and model. for example, if we have a method in parent class we can call it with super().method_name()
+        self.battery_size = battery_size
+
+ec = ElectricCar('Tesla', 'Model S', 85)
+print(ec.make, ec.model, ec.battery_size)  # Expected: Tesla Model S 85
 
 
-# Examples:
-print(who_passed({
-  "John" : ["5/5", "50/50", "10/10", "10/10"],
-  "Sarah" : ["4/8", "50/57", "7/10", "10/18"],
-  "Adam" : ["8/10", "22/25", "3/5", "5/5"],
-  "Barry" : ["3/3", "20/20"]
-}))  # Expected: ["Barry", "John"]
-
-print(who_passed({
-  "Zara" : ["10/10"],
-  "Kris" : ["30/30"],
-  "Charlie" : ["100/100"],
-  "Alex" : ["1/1"]
-}))  # Expected: ["Alex", "Charlie", "Kris", "Zara"]
-
-print(who_passed({
-  "Zach" : ["10/10", "2/4"],
-  "Fred" : ["7/9", "2/3"]
-}))  # Expected: []
