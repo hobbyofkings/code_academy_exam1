@@ -1,35 +1,42 @@
-# Class: Country
-# Objective: Enhance the `Country` class to include an attribute `is_big` and a method to compare population density with another country.
+# Implement a Custom Iterator for Prime Numbers
+# Objective: Design a class `PrimeIterator` that generates an infinite sequence of prime numbers.
+# Parameters:
+# - None, but the iterator should handle internal state for generating primes.
+# Returns:
+# - Prime numbers, one at a time, indefinitely.
 # Details:
-# - The `is_big` attribute should be set to True if either of the following criteria are met:
-#   - The population is greater than 250 million.
-#   - The area is larger than 3 million square km.
-# - The class should also include a method `compare_pd` that compares the population density of the country with another country object.
-# - The `compare_pd` method should return a string in the following format: "{country} has a {smaller / larger} population density than {other_country}".
-# - Population density is calculated as the population divided by the area.
+# - Implement the iterator protocol methods `__iter__()` and `__next__()`.
+# - Use a sophisticated method to check for primes to ensure efficiency as numbers grow large.
 
-class Country:
-    def __init__(self, name, population, area):
-        self.name = name
-        self.population = population
-        self.area = area
-        self.is_big = self.population > 250000000 or self.area > 3000000
+class PrimeIterator:
+    pass
 
-    def compare_pd(self, country):
-        pd = self.population / self.area
-        other_pd = country.population / country.area
-        if pd > other_pd:
-            return f"{self.name} has a larger population density than {country.name}"
-        elif pd < other_pd:
-            return f"{self.name} has a smaller population density than {country.name}"
-        else:
-            return f"{self.name} has the same population density as {country.name}"
+# Example:
+# primes = PrimeIterator()
+# for _ in range(10):
+#     print(next(primes))  # Prints the first 10 prime numbers
 
+class PrimeIterator:
+    def __init__(self):
+        self.primes = [2]
+        self.current = 1
 
-# Examples:
-australia = Country("Australia", 23545500, 7692024)
-andorra = Country("Andorra", 76098, 468)
+    def __iter__(self):
+        return self
 
-print(australia.is_big)  # Expected: True
-print(andorra.is_big)  # Expected: False
-print(andorra.compare_pd(australia))  # Expected: "Andorra has a larger population density than Australia"
+    def __next__(self):
+        self.current += 1
+        while not self.is_prime(self.current):
+            self.current += 1
+        self.primes.append(self.current)
+        return self.current
+
+    def is_prime(self, n):
+        for prime in self.primes:
+            if n % prime == 0:
+                return False
+        return True
+
+primes = PrimeIterator()
+for _ in range(10):
+    print(next(primes))  # Prints the first 10 prime numbers

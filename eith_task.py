@@ -1,24 +1,34 @@
-# Class: OnesThreesNines
-# Objective: Create a class `OnesThreesNines` that calculates the minimum number of ones, threes, and nines needed to sum up to a given integer.
-# The result should be stored in a variable `self.answer` in the format: "nines:x, threes:y, ones:z".
+# Create a Chainable List Class
+# Objective: Implement a class `ChainableList` that supports method chaining for append, extend, and pop methods.
 # Parameters:
-# - An integer between 0 and 26.
+# - None initially; the methods will handle input.
 # Returns:
-# - A string in the format "nines:x, threes:y, ones:z".
-# Notes:
-# - Each of the ones, threes or nines could only be either 0, 1 or 2.
-# - After the comma, you must put a space.
+# - Self, after modifying the list, to support chaining.
+# Details:
+# - Override the `append`, `extend`, and `pop` methods to return self.
+# - Ensure no method breaks the chaining by raising an exception or not returning self.
 
-class OnesThreesNines:
-    def __init__(self, number):
-        self.answer = f"nines:{number // 9}, threes:{(number % 9) // 3}, ones:{number % 3}"
+class ChainableList(list):
+	pass
 
-# Examples:
-otn1 = OnesThreesNines(10)
-print(otn1.answer)  # Expected: "nines:1, threes:0, ones:1"
+# Desired Outcome:
+# cl = ChainableList()
+# cl.append(1).extend([2, 3]).pop().append(4)  # Chain multiple operations
+# print(cl)  # Expected: [1, 4]
 
-otn2 = OnesThreesNines(15)
-print(otn2.answer)  # Expected: "nines:1, threes:2, ones:0"
+class ChainableList(list):
+    def append(self, item):
+        super().append(item)
+        return self
 
-otn3 = OnesThreesNines(22)
-print(otn3.answer)  # Expected: "nines:2, threes:1, ones:1"
+    def extend(self, items):
+        super().extend(items)
+        return self
+
+    def pop(self):
+        super().pop()
+        return self
+
+cl = ChainableList()
+cl.append(1).extend([2, 3]).pop().append(4)
+print(cl)  # The reason for getting [1, 2, 4] instead of [1, 4] is because the last element 3 is popped out, then 4 is appended, resulting in the final list being [1, 2, 4].

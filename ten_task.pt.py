@@ -1,42 +1,57 @@
-# Inheritance with Shape Classes
-# Objective: Create a base class `Shape` and two derived classes `Rectangle` and `Circle`.
-# The `Shape` class should have an abstract method `area` that calculates the area of the shape.
-# The derived classes should implement the `area` method.
-
+# Multi-level Cache System Simulation
+# Objective: Design a class `CacheSystem` that simulates a two-level cache (L1 and L2). L1 cache has faster access but lower capacity than L2.
+# Parameters:
+# - l1_size: Integer representing the number of entries L1 cache can hold.
+# - l2_size: Integer representing the number of entries L2 cache can hold.
+# Returns:
+# - None; methods will handle cache operations.
 # Details:
-# - The `Shape` class should have an `__init__` method that initializes the shape with its dimensions.
-# - The `Rectangle` class should be initialized with width and height.
-# - The `Circle` class should be initialized with radius.
-# - Both derived classes should implement the `area` method to calculate and return the area of the shape.
+# - Implement methods for `put` (to add or update data) and `get` (to retrieve data).
+# - Use an LRU (Least Recently Used) policy for cache eviction when the cache is full.
+# - If an item is accessed from L2, it should be moved to L1 (if there's space, otherwise evict the least recently used item from L1).
 
+# Example usage:
+# cache = CacheSystem(2, 3)
+# cache.put('a', 1)
+# cache.put('b', 2)
+# cache.get('a')  # Expected to access from L1
+# cache.put('c', 3)
+# cache.put('d', 4)  # Should trigger eviction in L2, moving 'c' to L1, evicting 'b'
+# cache.get('b')  # Expected: None
+# cache.get('c')  # Expected to move from L1, 'd' remains in L2
 
-class Shape:
-    def __init__(self):
-        pass
+class CacheSystem:
+    def __init__(self, l1_size, l2_size):
+        self.l1_size = l1_size
+        self.l2_size = l2_size
+        self.l1 = {}
+        self.l2 = {}
 
-    def area(self):
-        raise NotImplementedError("Subclass must implement abstract method")
+    def put(self, key, value):
+        if key in self.l1:
+            self.l1.pop(key)
+        elif key in self.l2:
+            self.l2.pop(key)
+        elif len(self.l1) == self.l1_size:
+            self.l1.pop(next(iter(self.l1)))
+        self.l1[key] = value
 
+    def get(self, key):
+        if key in self.l1:
+            return self.l1[key]
+        elif key in self.l2:
+            value = self.l2.pop(key)
+            self.l1[key] = value
+            return value
+        return None
 
-class Rectangle(Shape):
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+# Example usage:
+cache = CacheSystem(2, 3)
+cache.put('a', 1)
+cache.put('b', 2)
+print(cache.get('a'))  # Expected to access from L1
+cache.put('c', 3)
+cache.put('d', 4)  # Should trigger eviction in L2, moving 'c' to L1, evicting 'b'
+print(cache.get('b'))  # Expected: None
+print(cache.get('c'))  # Expected to move from L1, 'd' remains in L2
 
-    def area(self):
-        return self.width * self.height
-
-
-class Circle(Shape):
-    def __init__(self, radius):
-        self.radius = radius
-
-    def area(self):
-        return 3.14159265359 * self.radius ** 2
-
-
-# Examples:
-rectangle = Rectangle(4, 5)
-circle = Circle(3)
-print(rectangle.area())  # Expected: 20
-print(circle.area())     # Expected: 28.274333882308138
